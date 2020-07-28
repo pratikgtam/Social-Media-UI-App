@@ -1,9 +1,12 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
+import 'package:social_media_app/widgets/audio_video_add.dart';
 import 'package:social_media_app/widgets/conversastion_left.dart';
 import 'package:social_media_app/widgets/conversastion_left_emoji.dart';
 import 'package:social_media_app/widgets/conversastion_right_message.dart';
 import 'package:social_media_app/widgets/info_message.dart';
+import 'package:social_media_app/widgets/profile_and_status.dart';
 import 'package:social_media_app/widgets/welcome_all.dart';
 
 class ChatScreen extends StatelessWidget {
@@ -24,6 +27,9 @@ class ChatScreen extends StatelessWidget {
               Text('Digi, Sushi and 3 others'),
               Icon(Icons.call, color: Colors.white),
               Icon(Icons.videocam, color: Colors.white),
+              GestureDetector(
+                  onTap: () => _setInfo(context),
+                  child: Icon(Icons.error, color: Colors.white))
             ],
           ),
         ),
@@ -101,12 +107,20 @@ class ChatScreen extends StatelessWidget {
             ListTile(
               title: Row(
                 children: <Widget>[
-                  Text('Digi', style: TextStyle(color: Colors.green),),
-                  Icon(Icons.verified_user, color: Colors.green,)
+                  Text(
+                    'Digi',
+                    style: TextStyle(color: Colors.green),
+                  ),
+                  Icon(
+                    Icons.verified_user,
+                    color: Colors.green,
+                  )
                 ],
               ),
               subtitle: Image.asset('assets/emoji.png'),
-              leading: Icon(icon),
+              leading: CircleAvatar(
+                backgroundImage: AssetImage('assets/pp0.jpg'),
+              ),
             )
           ],
         ),
@@ -116,8 +130,8 @@ class ChatScreen extends StatelessWidget {
 
   Container buildError(String errorMsg) {
     return Container(
-      margin: EdgeInsets.fromLTRB(16,0,16,8),
-      padding: EdgeInsets.only(left: 16,top: 8,bottom: 8,right: 16),
+      margin: EdgeInsets.fromLTRB(16, 0, 16, 8),
+      padding: EdgeInsets.only(left: 16, top: 8, bottom: 8, right: 16),
       color: Color(0xffFEE7EA),
       child: Row(
         children: <Widget>[
@@ -127,7 +141,10 @@ class ChatScreen extends StatelessWidget {
           ),
           Padding(
             padding: const EdgeInsets.all(8.0),
-            child: Text(errorMsg, style: TextStyle(color:Color(0xffC2001A) ),),
+            child: Text(
+              errorMsg,
+              style: TextStyle(color: Color(0xffC2001A)),
+            ),
           )
         ],
       ),
@@ -383,4 +400,190 @@ class SilentUnsilent extends StatelessWidget {
       ),
     );
   }
+}
+
+final items = <Widget>[
+  Container(
+      width: double.infinity,
+      padding: EdgeInsets.all(12),
+
+      decoration: BoxDecoration(
+          color: Color(0xff2267A2),
+
+          borderRadius: BorderRadius.only(
+              topLeft: Radius.circular(10), topRight: Radius.circular(10))),
+      child: Text(
+        'Group Information',
+        style: TextStyle(
+            color: Colors.white, fontWeight: FontWeight.bold, fontSize: 18),
+        textAlign: TextAlign.center,
+      )),
+
+  // Top Profiles
+  groupParticipantsProfiles(),
+
+  // Name -> App, Digi, Max and 2
+  groupName(),
+
+  // Audio Video and Add Options
+  videoAudioAdd(),
+
+  Divider(
+    color: Colors.grey,
+  ),
+
+  //Other Options
+  GroupOptions(
+    iconData: Icons.notifications_off,
+    text: 'Notifications',
+  ),
+  GroupOptions(
+    iconData: Icons.fiber_pin,
+    text: 'Pin to Top',
+  ),
+  GroupOptions(
+    iconData: Icons.people,
+    text: 'Participants',
+  ),
+  GroupOptions(
+    iconData: Icons.call_missed_outgoing,
+    text: 'Kick User',
+  ),
+  GroupOptions(
+    iconData: Icons.block,
+    text: 'Block',
+  ),
+  GroupOptions(
+    iconData: Icons.brush,
+    text: 'Clear Chat',
+  ),
+  GroupOptions(
+    iconData: Icons.delete,
+    text: 'Leave & Delete',
+  )
+];
+
+Padding groupParticipantsProfiles() {
+  return Padding(
+    padding: const EdgeInsets.all(8.0),
+    child: Row(
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: <Widget>[
+        ProfileAndStatus(
+          profile: 'assets/pp0.jpg',
+          statusColor: Colors.green,
+        ),
+        ProfileAndStatus(
+          profile: 'assets/pp1.jpeg',
+          statusColor: Colors.red,
+        ),
+        ProfileAndStatus(
+          profile: 'assets/pp2.jpg',
+          statusColor: Colors.grey,
+        ),
+        Container(
+            padding: EdgeInsets.all(17),
+            margin: EdgeInsets.only(left: 2),
+            decoration: BoxDecoration(
+              shape: BoxShape.circle,
+              color: Color(0xffF0F0F0),
+            ),
+            child: Text(
+              '+2',
+              style: TextStyle(color: Colors.black),
+            )),
+      ],
+    ),
+  );
+}
+
+Row groupName() {
+  return Row(
+    mainAxisAlignment: MainAxisAlignment.center,
+    children: <Widget>[
+      Text(
+        'App, ',
+        style: TextStyle(color: Colors.red, fontSize: 16),
+      ),
+      Text(
+        'Digi, ',
+        style: TextStyle(color: Colors.green, fontSize: 16),
+      ),
+      Text(
+        'Max ',
+        style: TextStyle(color: Colors.purple, fontSize: 16),
+      ),
+      Text(
+        'and 2 ',
+        style: TextStyle(color: Colors.black, fontSize: 16),
+      ),
+      Icon(
+        Icons.edit,
+        color: Color(0xff3D6485),
+      ),
+    ],
+  );
+}
+
+class GroupOptions extends StatelessWidget {
+  final IconData iconData;
+  final String text;
+
+  const GroupOptions({
+    Key key,
+    this.iconData,
+    this.text,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return ListTile(
+      leading: Icon(
+        iconData,
+        color: Color(0xff3D6485),
+      ),
+      title: Text(text),
+    );
+  }
+}
+
+Row videoAudioAdd() {
+  return Row(
+    mainAxisAlignment: MainAxisAlignment.center,
+    children: <Widget>[
+      AudioVideoAdd(
+        name: 'Audio',
+        icondata: Icons.phone,
+      ),
+      AudioVideoAdd(
+        name: 'Video',
+        icondata: Icons.videocam,
+      ),
+      AudioVideoAdd(
+        name: 'Add',
+        icondata: Icons.person_add,
+      ),
+    ],
+  );
+}
+
+void _setInfo(context) {
+  showModalBottomSheet(
+    shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.only(
+            topLeft: Radius.circular(10), topRight: Radius.circular(10))),
+    context: context,
+    builder: (BuildContext _) {
+      return Container(
+        decoration: BoxDecoration(
+            color: Colors.transparent,
+            borderRadius: BorderRadius.only(
+                topLeft: Radius.circular(10), topRight: Radius.circular(10))),
+        child: Wrap(
+          children: items,
+        ),
+      );
+    },
+    isScrollControlled: true,
+  );
 }
