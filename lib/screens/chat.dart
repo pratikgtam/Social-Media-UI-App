@@ -98,6 +98,16 @@ class ChatScreen extends StatelessWidget {
               talkTime: '1 min',
             ),
             buildError('Error: Invalid Command'),
+            ListTile(
+              title: Row(
+                children: <Widget>[
+                  Text('Digi', style: TextStyle(color: Colors.green),),
+                  Icon(Icons.verified_user, color: Colors.green,)
+                ],
+              ),
+              subtitle: Image.asset('assets/emoji.png'),
+              leading: Icon(icon),
+            )
           ],
         ),
       ),
