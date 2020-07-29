@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
+import 'package:social_media_app/global/constants.dart';
 import 'package:social_media_app/widgets/audio_video_add.dart';
 import 'package:social_media_app/widgets/conversastion_left.dart';
 import 'package:social_media_app/widgets/conversastion_left_emoji.dart';
@@ -402,22 +403,9 @@ class SilentUnsilent extends StatelessWidget {
   }
 }
 
-final items = <Widget>[
-  Container(
-      width: double.infinity,
-      padding: EdgeInsets.all(12),
-
-      decoration: BoxDecoration(
-          color: Color(0xff2267A2),
-
-          borderRadius: BorderRadius.only(
-              topLeft: Radius.circular(10), topRight: Radius.circular(10))),
-      child: Text(
-        'Group Information',
-        style: TextStyle(
-            color: Colors.white, fontWeight: FontWeight.bold, fontSize: 18),
-        textAlign: TextAlign.center,
-      )),
+final infoItems = <Widget>[
+  //Top GroupInfo
+  buildTitleInfo('Group Information'),
 
   // Top Profiles
   groupParticipantsProfiles(),
@@ -462,6 +450,25 @@ final items = <Widget>[
     text: 'Leave & Delete',
   )
 ];
+
+Padding buildTitleInfo(String title) {
+  return Padding(
+    padding: const EdgeInsets.only(bottom: 12),
+    child: Container(
+        width: double.infinity,
+        padding: EdgeInsets.all(12),
+        decoration: BoxDecoration(
+            color: Color(0xff2267A2),
+            borderRadius: BorderRadius.only(
+                topLeft: Radius.circular(20), topRight: Radius.circular(20))),
+        child: Text(
+          title,
+          style: TextStyle(
+              color: Colors.white, fontWeight: FontWeight.bold, fontSize: 18),
+          textAlign: TextAlign.center,
+        )),
+  );
+}
 
 Padding groupParticipantsProfiles() {
   return Padding(
@@ -519,7 +526,7 @@ Row groupName() {
       ),
       Icon(
         Icons.edit,
-        color: Color(0xff3D6485),
+        color: Color(blueForIcons),
       ),
     ],
   );
@@ -538,9 +545,29 @@ class GroupOptions extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ListTile(
+      onTap: () {
+        Navigator.pop(context);
+        switch (text) {
+          case 'Notifications':
+            print('Noti');
+            break;
+
+          //          case 'Pin to Top':
+//            print('Pin');
+//            break;
+
+          case 'Participants':
+            _setParticipants(context);
+            break;
+
+          default:
+            print('default');
+            break;
+        }
+      },
       leading: Icon(
         iconData,
-        color: Color(0xff3D6485),
+        color: Color(blueForIcons),
       ),
       title: Text(text),
     );
@@ -571,17 +598,114 @@ void _setInfo(context) {
   showModalBottomSheet(
     shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.only(
-            topLeft: Radius.circular(10), topRight: Radius.circular(10))),
+            topLeft: Radius.circular(20), topRight: Radius.circular(20))),
     context: context,
     builder: (BuildContext _) {
-      return Container(
-        decoration: BoxDecoration(
-            color: Colors.transparent,
-            borderRadius: BorderRadius.only(
-                topLeft: Radius.circular(10), topRight: Radius.circular(10))),
-        child: Wrap(
-          children: items,
-        ),
+      return Wrap(
+        children: infoItems,
+      );
+    },
+    isScrollControlled: true,
+  );
+}
+
+final participantsItems = <Widget>[
+  //Top GroupInfo
+  buildTitleInfo('Participants'),
+
+  // Participants List
+
+  ParticipantsLists(),
+  ParticipantsLists(),
+  ParticipantsLists(),
+  ParticipantsLists(),
+  ParticipantsLists(),
+];
+
+class ParticipantsLists extends StatelessWidget {
+  const ParticipantsLists({
+    Key key,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Padding(
+      padding: const EdgeInsets.fromLTRB(16.0,8,16,0),
+      child: Row(
+        children: <Widget>[
+          ProfileAndStatus(
+            statusColor: Colors.green,
+            profile: 'assets/pp0.jpg',
+          ),
+          Column(
+            mainAxisAlignment: MainAxisAlignment.start,
+            children: <Widget>[
+              Padding(
+                padding: const EdgeInsets.only(left: 16, bottom: 4),
+                child: Row(
+                  children: <Widget>[
+                    Text(
+                      'Digi',
+                      style: TextStyle(color: Colors.green, fontSize: 16),
+                    ),
+                    Icon(
+                      Icons.verified_user,
+                      color: Colors.green,
+                    ),
+                    Container(
+                      padding: EdgeInsets.all(8),
+                      margin: EdgeInsets.only(left: 8, right: 8),
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(10),
+                        color: Color(greyBackground),
+                      ),
+                      child: Text(
+                        'ADMIN',
+                        textAlign: TextAlign.start,
+                        style: TextStyle(color: Color(greyText)),
+                      ),
+                    )
+                  ],
+                ),
+              ),
+              Text(
+                'Susah Chapal',
+textAlign: TextAlign.start,
+                style: TextStyle(
+                  color: Colors.black,
+                  fontSize: 18,
+                ),
+              )
+            ],
+          ),
+          Spacer(
+            flex: 1,
+          ),
+          Padding(
+            padding: const EdgeInsets.only(right: 16),
+            child: Icon(
+              Icons.message,
+              color: Color(blueForIcons),
+            ),
+          ),
+          Icon(Icons.person_add,
+          color: Color(blueForIcons),
+          ),
+        ],
+      ),
+    );
+  }
+}
+
+void _setParticipants(context) {
+  showModalBottomSheet(
+    shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.only(
+            topLeft: Radius.circular(20), topRight: Radius.circular(20))),
+    context: context,
+    builder: (BuildContext _) {
+      return Wrap(
+        children: participantsItems,
       );
     },
     isScrollControlled: true,

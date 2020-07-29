@@ -2,13 +2,13 @@ import 'package:flutter/material.dart';
 
 class ProfileAndStatus extends StatelessWidget {
   final String profile;
-  final bool visible;
+  final bool visibleStatus;
   final Color statusColor;
 
   const ProfileAndStatus({
     Key key,
     this.profile,
-    this.visible = true,
+    this.visibleStatus = true,
     this.statusColor,
   }) : super(key: key);
 
@@ -25,7 +25,7 @@ class ProfileAndStatus extends StatelessWidget {
           left: 30.0,
           bottom: -5,
           child: Visibility(
-              visible: visible,
+              visible: visibleStatus,
               child: new Icon(Icons.brightness_1,
                   size: 20.0, color: statusColor)),
         ),
